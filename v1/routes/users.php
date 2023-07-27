@@ -19,16 +19,28 @@ switch ($request_method) {
                     header('Content-Type: application/json');
                     echo json_encode($users);
                     break;
-
+                case 'create':
+                    $userController = new  UserController($mysqli);
+                    $user = $userController->createUser();
+                    header('Content-Type: application/json');
+                    echo json_encode($user);
+                    break;
                 // Add other actions for retrieving specific users, etc.
 
                 default:
                     // Invalid action
+                    // No action specified
+                    header('Content-Type: application/json');
+                    $error = array('message'=>"Bad Request",'type'=> "action",  'status'=> 400);
+                    echo json_encode($error);
                     header("HTTP/1.0 400 Bad Request");
                     break;
             }
         } else {
             // No action specified
+            header('Content-Type: application/json');
+            $error = array('message'=>"Bad request",'type'=> "blank", 'status'=> 400);
+            echo json_encode($error);
             header("HTTP/1.0 400 Bad Request");
         }
         break;
