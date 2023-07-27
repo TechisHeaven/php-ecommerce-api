@@ -26,7 +26,12 @@ switch ($request_method) {
                     echo json_encode($user);
                     break;
                 // Add other actions for retrieving specific users, etc.
-
+                case 'login':
+                    $userController = new  UserController($mysqli);
+                    $user = $userController->getUserByEmail();
+                    header('Content-Type: application/json');
+                    echo json_encode($user);
+                    break;
                 default:
                     // Invalid action
                     // No action specified
