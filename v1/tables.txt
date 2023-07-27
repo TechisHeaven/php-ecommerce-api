@@ -1,0 +1,127 @@
+CREATE TABLE products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL,
+    archieved INT DEFAULT 0,
+    category_id INT,
+    size_id INT,
+    color_id INT,
+    image_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id),
+    FOREIGN KEY (size_id) REFERENCES sizes(size_id),
+    FOREIGN KEY (color_id ) REFERENCES colors(color_id )
+);
+
+
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    full_name VARCHAR(50),
+    address VARCHAR(255),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    postal_code VARCHAR(20),
+    country VARCHAR(100),
+    phone VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    order_status VARCHAR(50) NOT NULL,
+    shipping_address VARCHAR(255) NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+
+
+CREATE TABLE order_items (
+    order_item_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    item_price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+CREATE TABLE categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL,
+    billboard_id VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE carts (
+    cart_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+
+
+CREATE TABLE billboards (
+    billboard_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    image_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL,
+    billboard_id VARCHAR(100) NOT NULL,
+    FOREIGN KEY (billboard_id) REFERENCES billboards(billboard_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+CREATE TABLE sizes (
+    size_id INT AUTO_INCREMENT PRIMARY KEY,
+    size_name VARCHAR(50) NOT NULL,
+    size_value VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE colors (
+    color_id INT AUTO_INCREMENT PRIMARY KEY,
+    color_name VARCHAR(50) NOT NULL,
+    color_value VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
