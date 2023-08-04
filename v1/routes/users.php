@@ -19,16 +19,24 @@ switch ($request_method) {
                     header('Content-Type: application/json');
                     echo json_encode($users);
                     break;
+                    //create user
                 case 'create':
                     $userController = new  UserController($mysqli);
                     $user = $userController->createUser();
                     header('Content-Type: application/json');
                     echo json_encode($user);
                     break;
-                // Add other actions for retrieving specific users, etc.
+                // get user by email.
                 case 'login':
                     $userController = new  UserController($mysqli);
                     $user = $userController->getUserByEmail();
+                    header('Content-Type: application/json');
+                    echo json_encode($user);
+                    break;
+                // update user.
+                case 'update':
+                    $userController = new  UserController($mysqli);
+                    $user = $userController->updateUser();
                     header('Content-Type: application/json');
                     echo json_encode($user);
                     break;

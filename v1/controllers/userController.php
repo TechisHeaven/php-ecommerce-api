@@ -9,7 +9,7 @@ class UserController{
 	public function __construct($mysqli) {
 		$this->mysqli = $mysqli;
 	}
-
+	//get all users
 	public function getAllUsers() {
 		
 		$header = apache_request_headers();
@@ -58,7 +58,7 @@ class UserController{
 		}
 	}
 
-
+	//create user 
 
 	public function createUser(){
 		//req body get
@@ -109,7 +109,7 @@ class UserController{
 	}
 
 
-
+    //get specific user for login user
 
 	public function getUserByEmail(){
 		$request_body = json_decode(file_get_contents('php://input'));
@@ -133,6 +133,7 @@ class UserController{
 			echo json_encode($custom);
 			die();
 		}
+
 		if($result){
 			$users = $result->fetch_array(MYSQLI_ASSOC);
 
@@ -151,6 +152,61 @@ class UserController{
 		}
 		
 	}
+
+	//update user
+	public function updateUser(){
+		$request_body = json_decode(file_get_contents('php://input'));
+		// Validate email and password
+		if (empty($request_body->user_id)) {
+			$custom =CustomError(404, 'user id are required.');
+			echo json_encode($custom);
+			die();
+		}
+		//get type of user update type
+		$type = $_GET['type'];
+
+		if($type==='address'){
+			$user_id = $request_body->user_id;
+			$address = isset($request_body->address) ? customRealEscapeString($this->mysqli, $request_body->address): "";
+			$city = isset($request_body->city) ? customRealEscapeString($this->mysqli, $request_body->city) : "";
+			$state = isset($request_body->state) ? customRealEscapeString($this->mysqli, $request_body->state): "";
+			echo $state;
+			$postal_code = isset($request_body->postal_code) ? customRealEscapeString($this->mysqli, $request_body->postal_code): "";
+			$country = isset($request_body->country) ? customRealEscapeString($this->mysqli, $request_body->country): "";
+			//.sql query
+			$query = "update `users` set address = '$address', city = '$city', state = '$state', postal_code = '$postal_code', country='$country' where `user_id` = '$user_id'";
+
+			//run sql query 
+			$result = $this->mysqli->query($query);
+			
+			
+			if(!$result && $result->num_rows <= 0){
+			$custom =CustomError(404, 'Failed to fetch.');
+			echo json_encode($custom);
+			die();
+			}
+
+			if($result){
+				$user_query = "select * from `users` where `user_id` = '$user_id'";
+				$user_result = $this->mysqli->query($user_query);
+				$userData = $user_result->fetch_array(MYSQLI_ASSOC);
+
+				if(!$userData){
+					$custom =CustomError(404, 'User not found.');
+					echo json_encode($custom);
+				}
+				
+				return array("message" => "Success updated user data", 'status'=>200, 'user_data'=>$userData);
+			}
+		}
+
+		// $full_name = customRealEscapeString($this->mysqli, $request_body->full_name);
+
+
+
+
+	}
+
 }
 
 
