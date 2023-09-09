@@ -27,6 +27,18 @@ switch($request_method){
                 }
             }
         break;
+    case 'PUT':
+        if(isset($_GET['action'])){
+            switch($_GET['action']){
+                case 'update':
+                    $BillboardController = new BillboardController($mysqli);
+                    $billboard = $BillboardController->updateBillboard();
+                    header('Content-Type: application/json');
+                    echo json_encode($billboard);
+                    break;
+            }
+        }
+        break;
     case 'GET':
         if(isset($_GET['action'])){
             switch($_GET['action']){

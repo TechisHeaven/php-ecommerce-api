@@ -144,7 +144,7 @@ class UserController{
 				echo json_encode($custom);
 				die();
 			}
-			$jwtToken = createJwtToken($users['user_id'], 60*60);
+			$jwtToken = createJwtToken($users['user_id'], 60*60*24);
 			
 
 			return array("message" => "Success Login", 'status'=>200 ,'jwtToken'=> $jwtToken );
