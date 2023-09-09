@@ -27,6 +27,11 @@ if ($api_version_position !== false) {
             require_once "routes/posts.php";
             break;
 
+        case 'billboards':
+            // Handle post-related routes
+            require_once "routes/billboards.php";
+            break;
+
         case 'comments':
             // Handle comment-related routes
             require_once "routes/comments.php";
